@@ -46,9 +46,10 @@ population create_population(){
 }
 
 int main() {
-    population temp_tour = create_population();
-    temp_tour.tour_evaluate();
-    cout << temp_tour << "\r\n";
+    population temp_pop = create_population();
+    temp_pop.tour_evaluate();
+
+    cout << temp_pop << "\r\n";
 
     return 0;
 }
