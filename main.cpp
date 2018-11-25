@@ -7,14 +7,25 @@
 #include "population.hpp"
 using namespace std;
 
-constexpr int CITIES_IN_TOUR = 32;
-constexpr int POPULATION_SIZE = 32;
+
 constexpr int SHUFFLES = 64;
 constexpr int MAP_BOUNDRY = 1000;
+constexpr int IMPROVEMENT_FACTOR = 10;
 
-
-
-
+static int get_tour_size(){
+    int tour_size;
+    cout<<"How many cities in a tour?" <<endl;
+    cin>> tour_size;
+    return tour_size;
+}
+static int get_population_size(){
+    int pop_size;
+    cout<<"How many tours in a population?" <<endl;
+    cin>> pop_size;
+    return pop_size;
+}
+const int CITIES_IN_TOUR = get_tour_size();
+const int POPULATION_SIZE = get_population_size();
 int random_int(const int & min, const int & max) {
     // return random int
     std::random_device rd;
@@ -49,6 +60,8 @@ int main() {
     population temp_pop = create_population();
     temp_pop.tour_evaluate();
     temp_pop.crossover();
+    temp_pop.mutate();
+    temp_pop.tour_evaluate();
     cout << temp_pop << "\r\n";
 
     return 0;

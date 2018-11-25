@@ -15,7 +15,7 @@ void tour::shuffle_cities() {
 }
 bool tour::contains_city(city &A) {
     for(city &i : tour_list){
-        if(&i == &A){
+        if(i == A){
             return true;
         }
     }

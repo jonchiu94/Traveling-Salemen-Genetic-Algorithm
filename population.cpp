@@ -3,10 +3,18 @@
 //
 
 
+#include <iostream>
 #include "population.hpp"
 population::population(vector<tour> population):population_list{move(population)} {
 
 }
+int population::get_parent_pool_size(){
+    int crossover_size;
+    cout<<"How many parents for crossover?" <<endl;
+    cin>> crossover_size;
+    return crossover_size;
+}
+const int NUMBER_OF_PARENTS = population::get_parent_pool_size();
 int population::random_int(const int & min, const int & max) {
     // return random int
     std::random_device rd;
@@ -137,7 +145,7 @@ void population::crossover() {
 }
 void population::mutate(){
     int rand_int = random_int(NUMBER_OF_ELITES, population_list.size());
-    for(int i = 0; i < population_list[rand_int].getTour_list().size(); i++){
+    for(int i = 0; i < population_list[rand_int].getTour_list().size()-1; i++){
         double rand_double = random_double(0.0, 1.0);
         if (rand_double< MUTATION_RATE){
             population_list[rand_int].mutate(i);

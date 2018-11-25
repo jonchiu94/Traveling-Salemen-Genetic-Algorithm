@@ -8,12 +8,11 @@
 #include <random>
 #include <algorithm>
 
-constexpr int PARENT_POOL_SIZE = 5;
+
 const int NUMBER_OF_ELITES = 1;
-const int NUMBER_OF_PARENTS = 2;
 constexpr int ITERATIONS = 1000;
 constexpr double MUTATION_RATE = 0.05;
-
+constexpr int PARENT_POOL_SIZE = 5;
 class population {
 private:
     vector<tour>population_list;
@@ -21,6 +20,7 @@ private:
 public:
     const vector<tour> &getPopulation_list() const;
     population(vector<tour> population);
+    static int get_parent_pool_size();
     int elite_tour();
     tour get_elite_tour();
     void move_elite_tour();
