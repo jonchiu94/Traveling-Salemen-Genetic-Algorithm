@@ -10,13 +10,10 @@ using namespace std;
 constexpr int CITIES_IN_TOUR = 32;
 constexpr int POPULATION_SIZE = 32;
 constexpr int SHUFFLES = 64;
-constexpr int ITERATIONS = 1000;
 constexpr int MAP_BOUNDRY = 1000;
-constexpr int PARENT_POOL_SIZE = 5;
-constexpr double MUTATION_RATE = 0.05;
 
-const int NUMBER_OF_PARENTS = 2;
-const int NUMBER_OF_ELITES = 1;
+
+
 
 int random_int(const int & min, const int & max) {
     // return random int
@@ -31,7 +28,7 @@ city create_cities(){
 }
 tour create_tour(){
     vector<city> tour_list;
-    for(int i = 0; i <= CITIES_IN_TOUR; i++){
+    for(int i = 0; i < CITIES_IN_TOUR; i++){
         tour_list.push_back(create_cities());
     }
     tour* new_tour = new tour(tour_list);
@@ -49,6 +46,9 @@ population create_population(){
 }
 
 int main() {
+    population temp_tour = create_population();
+    temp_tour.tour_evaluate();
+    cout << temp_tour << "\r\n";
 
     return 0;
 }
