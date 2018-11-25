@@ -69,6 +69,11 @@ void swap(tour& tour1,tour& tour2){
     swap(tour1.fitness, tour2.fitness);
     swap(tour1.distance, tour2.distance);
 }
+void tour::mutate(int pos) {
+    city temp_city = tour_list[pos];
+    tour_list[pos] = tour_list[pos+1];
+    tour_list[pos+1] = temp_city;
+}
 double tour::getFitness() const {
     return fitness;
 }

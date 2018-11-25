@@ -2,8 +2,7 @@
 // Created by User on 11/22/2018.
 //
 
-#include <random>
-#include <algorithm>
+
 #include "population.hpp"
 population::population(vector<tour> population):population_list{move(population)} {
 
@@ -14,6 +13,13 @@ int population::random_int(const int & min, const int & max) {
     std::mt19937 rng(rd());
     std::uniform_int_distribution<int> uni(min,max);
     return uni(rng);
+}
+
+
+double population::random_double(double min_double, double max_double) {
+    uniform_real_distribution<double> distribution(min_double, max_double);
+    double random_double = distribution(generator);
+    return random_double;
 }
 int population::elite_tour() {
     double fitness = 0.0;
@@ -114,7 +120,13 @@ void population::crossover() {
     }
 }
 void population::mutate(){
-
+    int rand_int = random_int(NUMBER_OF_ELITES, population_list.size());
+    for(int i = 0; i < population_list[rand_int].getTour_list().size(); i++){
+        double rand_double = random_double(0.0, 1.0);
+        if (rand_double< MUTATION_RATE){
+            population_list[rand_int].mutate(i);
+        }
+    }
 }
 vector<tour> population::create_parent_pool() {
     vector<tour> temp_pool;

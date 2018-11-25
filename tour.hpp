@@ -23,6 +23,7 @@ public:
     void determine_fitness();
     bool contains_city(city &A);
     void add_city(city &A);
+    void mutate(int pos);
     tour& operator=(tour tour2);
     friend bool operator==(const tour &A, const tour &B);
     friend ostream &operator<< (ostream &os, const tour &A);
