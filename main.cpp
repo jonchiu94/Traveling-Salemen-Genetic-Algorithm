@@ -48,7 +48,7 @@ population create_population(){
 int main() {
     population temp_pop = create_population();
     temp_pop.tour_evaluate();
-
+    temp_pop.crossover();
     cout << temp_pop << "\r\n";
 
     return 0;

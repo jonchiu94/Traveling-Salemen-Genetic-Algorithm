@@ -15,7 +15,7 @@ int population::random_int(const int & min, const int & max) {
     return uni(rng);
 }
 
-
+default_random_engine generator(time(nullptr));
 double population::random_double(double min_double, double max_double) {
     uniform_real_distribution<double> distribution(min_double, max_double);
     double random_double = distribution(generator);
@@ -96,15 +96,31 @@ tour population::three_parent_cross(tour tour1, tour tour2, tour tour3) {
     return *temp_tour;
 
 }
+bool population::is_same_parent_pool(vector<tour> A, vector<tour> B) {
+    for(int i = 0; i < A.size(); i++){
+        for(int j = 0; j < B.size(); j++) {
+            if (A[i] == B[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 void population::crossover() {
     move_elite_tour();
     double base_distance = population_list[0].get_tour_distance();
     for(int i = NUMBER_OF_ELITES; i < population_list.size(); i++){
         vector<tour> temp_pool = create_parent_pool();
         population* temp_pop = new population(temp_pool);
-        temp_pop->tour_evaluate();
         vector<tour> temp_pool2 = create_parent_pool();
         population* temp_pop2 = new population(temp_pool);
+        while(is_same_parent_pool(temp_pool, temp_pool2)){
+            temp_pool = create_parent_pool();
+            temp_pop = new population(temp_pool);
+            temp_pool2 = create_parent_pool();
+            temp_pop2 = new population(temp_pool);
+        }
+        temp_pop->tour_evaluate();
         temp_pop2->tour_evaluate();
         if(NUMBER_OF_PARENTS == 2){
             tour temp_tour = two_parent_cross(temp_pop->get_elite_tour(), temp_pop2->get_elite_tour());
