@@ -8,15 +8,8 @@
 population::population(vector<tour> population):population_list{move(population)} {
 
 }
-int population::get_parent_pool_size(){
-    int crossover_size;
-    cout<<"How many parents for crossover?" <<endl;
-    cin>> crossover_size;
-    return crossover_size;
-}
-const int NUMBER_OF_PARENTS = population::get_parent_pool_size();
+
 int population::random_int(const int & min, const int & max) {
-    // return random int
     std::random_device rd;
     std::mt19937 rng(rd());
     std::uniform_int_distribution<int> uni(min,max);
@@ -49,102 +42,81 @@ void population::move_elite_tour() {
     population_list.insert(population_list.begin(), population_list[elite_pos]);
     population_list.erase(population_list.begin()+(elite_pos+1));
 }
-tour population::two_parent_cross(tour tour1, tour tour2) {
-    int pos =0;
-    vector<city> temp;
-    tour* temp_tour = new tour(temp);
-    vector<city> temp_tour_list = tour1.getTour_list();
-    vector<city> temp_tour_list2 = tour2.getTour_list();
-    int rand = random_int(0, temp_tour_list.size());
-    for(int i = 0; i <= rand; i++){
-        temp_tour->add_city(temp_tour_list[i]);
-    }
-    for(int j = rand; j < temp_tour_list2.size(); j++){
-        if(!temp_tour->contains_city(temp_tour_list2[j])){
-            temp_tour->add_city(temp_tour_list2[j]);
-        }
-    }
-    while(temp_tour->getTour_list().size() < temp_tour_list2.size()){
-        if(!temp_tour->contains_city(temp_tour_list2[pos])){
-            temp_tour->add_city(temp_tour_list2[pos]);
-        }
-        pos++;
-    }
-    return *temp_tour;
 
-}
-tour population::three_parent_cross(tour tour1, tour tour2, tour tour3) {
+tour population::five_parent_cross(tour tour1, tour tour2, tour tour3, tour tour4, tour tour5) {
     int pos =0;
     vector<city> temp;
     tour* temp_tour = new tour(temp);
     vector<city> temp_tour_list = tour1.getTour_list();
     vector<city> temp_tour_list2 = tour2.getTour_list();
     vector<city> temp_tour_list3 = tour3.getTour_list();
+    vector<city> temp_tour_list4 = tour3.getTour_list();
+    vector<city> temp_tour_list5 = tour3.getTour_list();
     int rand = random_int(0, temp_tour_list.size());
     int rand2 = random_int(0, temp_tour_list.size());
+    int rand3 = random_int(0, temp_tour_list.size());
+    int rand4 = random_int(0, temp_tour_list.size());
+    int rand5 = random_int(0, temp_tour_list.size());
     for(int i = 0; i <= rand; i++){
         temp_tour->add_city(temp_tour_list[i]);
     }
-    for(int j = rand; j <= rand2; j++){
+    for(int j = 0; j <= rand2; j++){
         if(!temp_tour->contains_city(temp_tour_list2[j])){
             temp_tour->add_city(temp_tour_list2[j]);
         }
     }
-    for(int k = rand2; k < temp_tour_list3.size(); k++){
+    for(int k = 0; k < rand3; k++){
         if(!temp_tour->contains_city(temp_tour_list3[k])){
             temp_tour->add_city(temp_tour_list3[k]);
         }
     }
-    while(temp_tour->getTour_list().size() < temp_tour_list3.size()){
-        if(!temp_tour->contains_city(temp_tour_list3[pos])){
-            temp_tour->add_city(temp_tour_list3[pos]);
+    for(int l = 0; l < rand4; l++){
+        if(!temp_tour->contains_city(temp_tour_list4[l])){
+            temp_tour->add_city(temp_tour_list4[l]);
+        }
+    }
+    for(int m = 0; m < rand5; m++){
+        if(!temp_tour->contains_city(temp_tour_list5[m])){
+            temp_tour->add_city(temp_tour_list5[m]);
+        }
+    }
+    while(temp_tour->getTour_list().size() < temp_tour_list5.size()){
+        if(!temp_tour->contains_city(temp_tour_list5[pos])){
+            temp_tour->add_city(temp_tour_list5[pos]);
         }
         pos++;
     }
     return *temp_tour;
 
 }
-bool population::is_same_parent_pool(vector<tour> A, vector<tour> B) {
-    for(int i = 0; i < A.size(); i++){
-        for(int j = 0; j < B.size(); j++) {
-            if (A[i] == B[j]) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+
 void population::crossover() {
     move_elite_tour();
-    double base_distance = population_list[0].get_tour_distance();
     for(int i = NUMBER_OF_ELITES; i < population_list.size(); i++){
         vector<tour> temp_pool = create_parent_pool();
-        population* temp_pop = new population(temp_pool);
         vector<tour> temp_pool2 = create_parent_pool();
+        vector<tour> temp_pool3 = create_parent_pool();
+        vector<tour> temp_pool4 = create_parent_pool();
+        vector<tour> temp_pool5 = create_parent_pool();
+        population* temp_pop = new population(temp_pool);
         population* temp_pop2 = new population(temp_pool);
-        while(is_same_parent_pool(temp_pool, temp_pool2)){
-            temp_pool = create_parent_pool();
-            temp_pop = new population(temp_pool);
-            temp_pool2 = create_parent_pool();
-            temp_pop2 = new population(temp_pool);
-        }
+        population* temp_pop3 = new population(temp_pool);
+        population* temp_pop4 = new population(temp_pool);
+        population* temp_pop5 = new population(temp_pool);
         temp_pop->tour_evaluate();
         temp_pop2->tour_evaluate();
-        if(NUMBER_OF_PARENTS == 2){
-            tour temp_tour = two_parent_cross(temp_pop->get_elite_tour(), temp_pop2->get_elite_tour());
-            population_list[i]=(temp_tour);
-        }
-        else if(NUMBER_OF_PARENTS == 3){
-            vector<tour> temp_pool3 = create_parent_pool();
-            population* temp_pop3 = new population(temp_pool);
-            temp_pop->tour_evaluate();
-            tour temp_tour = three_parent_cross(temp_pop->get_elite_tour(), temp_pop2->get_elite_tour(), temp_pop3->get_elite_tour());
+        temp_pop3->tour_evaluate();
+        temp_pop4->tour_evaluate();
+        temp_pop5->tour_evaluate();
+        for(int i = 0; i < NUMBER_OF_PARENTS; i++){
+
+            tour temp_tour = five_parent_cross(temp_pop->get_elite_tour(), temp_pop2->get_elite_tour(), temp_pop3->get_elite_tour(), temp_pop4->get_elite_tour(), temp_pop5->get_elite_tour());
             population_list[i]=(temp_tour);
         }
     }
 }
 void population::mutate(){
-    int rand_int = random_int(NUMBER_OF_ELITES, population_list.size());
+    int rand_int = random_int(NUMBER_OF_ELITES, population_list.size()-1);
     for(int i = 0; i < population_list[rand_int].getTour_list().size()-1; i++){
         double rand_double = random_double(0.0, 1.0);
         if (rand_double< MUTATION_RATE){
@@ -152,12 +124,34 @@ void population::mutate(){
         }
     }
 }
+void population::genetic_algorithm() {
+    int num = 0;
+    tour_evaluate();
+    move_elite_tour();
+    double base_distance = population_list[0].get_tour_distance();
+    double best_distance = population_list[0].get_tour_distance();
+    improvement_percentage = (best_distance/base_distance) *100;
+    while(num < ITERATIONS){
+        cout<< "Iteration #: " << num << "\r\n";
+        tour_evaluate();
+        crossover();
+        mutate();
+        tour_evaluate();
+        move_elite_tour();
+        best_distance = population_list[0].get_tour_distance();
+        improvement_percentage = (best_distance/base_distance-1) * 100;
+        cout<< improvement_percentage <<  "% \r\n";
+        num++;
+    }
+    cout<<get_elite_tour();
+}
 vector<tour> population::create_parent_pool() {
     vector<tour> temp_pool;
+    temp_pool.clear();
     for(int i =NUMBER_OF_ELITES; i < PARENT_POOL_SIZE; ++i){
-        int rand = random_int(NUMBER_OF_ELITES, population_list.size());
+        int rand = random_int(NUMBER_OF_ELITES, population_list.size()-1);
         while(find(temp_pool.begin(), temp_pool.end(), population_list[rand]) != temp_pool.end()) {
-            rand = random_int(NUMBER_OF_ELITES, population_list.size());
+            rand = random_int(NUMBER_OF_ELITES, population_list.size()-1);
         }
         temp_pool.push_back(population_list[rand]);
     }

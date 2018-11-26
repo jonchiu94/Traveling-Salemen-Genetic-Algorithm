@@ -10,22 +10,29 @@ using namespace std;
 
 constexpr int SHUFFLES = 64;
 constexpr int MAP_BOUNDRY = 1000;
-constexpr int IMPROVEMENT_FACTOR = 10;
-
+//Asks user for number of cities in a tour
+//returns int representing size of tours
 static int get_tour_size(){
     int tour_size;
     cout<<"How many cities in a tour?" <<endl;
     cin>> tour_size;
     return tour_size;
 }
+//Asks user for number of tours in a population
+//returns int representing size of population
 static int get_population_size(){
     int pop_size;
     cout<<"How many tours in a population?" <<endl;
     cin>> pop_size;
     return pop_size;
 }
+//Setting constants for tour size and population size
 const int CITIES_IN_TOUR = get_tour_size();
 const int POPULATION_SIZE = get_population_size();
+//Generates a random integer
+//returns a random int
+//@param min is min for random number
+//@param max is max for random number
 int random_int(const int & min, const int & max) {
     // return random int
     std::random_device rd;
@@ -33,10 +40,14 @@ int random_int(const int & min, const int & max) {
     std::uniform_int_distribution<int> uni(min,max);
     return uni(rng);
 }
+//Generates a new city
+//Returns a city
 city create_cities(){
     city* new_city = new city(random_int(0, MAP_BOUNDRY), random_int(0, MAP_BOUNDRY));
     return *new_city;
 }
+//Generates a tour
+//Returns a tour
 tour create_tour(){
     vector<city> tour_list;
     for(int i = 0; i < CITIES_IN_TOUR; i++){
@@ -58,11 +69,7 @@ population create_population(){
 
 int main() {
     population temp_pop = create_population();
-    temp_pop.tour_evaluate();
-    temp_pop.crossover();
-    temp_pop.mutate();
-    temp_pop.tour_evaluate();
-    cout << temp_pop << "\r\n";
+    temp_pop.genetic_algorithm();
 
     return 0;
 }
