@@ -53,7 +53,12 @@ void population::move_elite_tour() {
     population_list.insert(population_list.begin(), population_list[elite_pos]);
     population_list.erase(population_list.begin()+(elite_pos+1));
 }
-
+//Crossover for five parent pools and returns the child tour
+//@param tour1 is one of parent pools
+//@param tour2 is one of parent pools
+//@param tour3 is one of parent pools
+//@param tour4 is one of parent pools
+//@param tour5 is one of parent pools
 tour population::five_parent_cross(tour tour1, tour tour2, tour tour3, tour tour4, tour tour5) {
     int pos =0;
     vector<city> temp;
@@ -61,13 +66,13 @@ tour population::five_parent_cross(tour tour1, tour tour2, tour tour3, tour tour
     vector<city> temp_tour_list = tour1.getTour_list();
     vector<city> temp_tour_list2 = tour2.getTour_list();
     vector<city> temp_tour_list3 = tour3.getTour_list();
-    vector<city> temp_tour_list4 = tour3.getTour_list();
-    vector<city> temp_tour_list5 = tour3.getTour_list();
+    vector<city> temp_tour_list4 = tour4.getTour_list();
+    vector<city> temp_tour_list5 = tour5.getTour_list();
     int rand = random_int(0, temp_tour_list.size());
-    int rand2 = random_int(0, temp_tour_list.size());
-    int rand3 = random_int(0, temp_tour_list.size());
-    int rand4 = random_int(0, temp_tour_list.size());
-    int rand5 = random_int(0, temp_tour_list.size());
+    int rand2 = random_int(0, temp_tour_list2.size());
+    int rand3 = random_int(0, temp_tour_list3.size());
+    int rand4 = random_int(0, temp_tour_list4.size());
+    int rand5 = random_int(0, temp_tour_list5.size());
     for(int i = 0; i <= rand; i++){
         temp_tour->add_city(temp_tour_list[i]);
     }
@@ -100,7 +105,7 @@ tour population::five_parent_cross(tour tour1, tour tour2, tour tour3, tour tour
     return *temp_tour;
 
 }
-
+//Crossover function
 void population::crossover() {
     move_elite_tour();
     for(int i = NUMBER_OF_ELITES; i < population_list.size(); i++){
@@ -126,6 +131,7 @@ void population::crossover() {
         }
     }
 }
+//Mutation function
 void population::mutate(){
     int rand_int = random_int(NUMBER_OF_ELITES, population_list.size()-1);
     for(int i = 0; i < population_list[rand_int].getTour_list().size()-1; i++){
@@ -135,6 +141,7 @@ void population::mutate(){
         }
     }
 }
+//Genetic Algorithm function
 void population::genetic_algorithm() {
     int num = 0;
     tour_evaluate();
@@ -157,6 +164,8 @@ void population::genetic_algorithm() {
     cout<<"Best tour \r\n";
     cout<<get_elite_tour() << endl;
 }
+//Creates a parent pool of size PARENT_POOL_SIZE
+//returns a vector with randomly selected tours
 vector<tour> population::create_parent_pool() {
     vector<tour> temp_pool;
     temp_pool.clear();
@@ -169,17 +178,22 @@ vector<tour> population::create_parent_pool() {
     }
     return temp_pool;
 }
+//Evaluates tours in population
 void population::tour_evaluate() {
     for(tour& i : population_list){
         i.determine_fitness();
     }
 }
+//Overloaded insertion operator
+//@param os is ostream object
+//@param A is population object
 ostream &operator<<(ostream &os, const population &A){
     for(const tour& i: A.getPopulation_list()){
         os << i;
     }
 }
-
+//Getter for population list
+//returns population list
 const vector<tour> &population::getPopulation_list() const {
     return population_list;
 }
