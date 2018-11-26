@@ -5,10 +5,14 @@
 
 #include <iostream>
 #include "population.hpp"
+//Population constructor
 population::population(vector<tour> population):population_list{move(population)} {
 
 }
-
+//Random integer generator
+//Returns a random int
+//@param min is min for random number
+//@param max is max for random number
 int population::random_int(const int & min, const int & max) {
     std::random_device rd;
     std::mt19937 rng(rd());
@@ -143,7 +147,8 @@ void population::genetic_algorithm() {
         cout<< improvement_percentage <<  "% \r\n";
         num++;
     }
-    cout<<get_elite_tour();
+    cout<<"Best tour \r\n";
+    cout<<get_elite_tour() << endl;
 }
 vector<tour> population::create_parent_pool() {
     vector<tour> temp_pool;

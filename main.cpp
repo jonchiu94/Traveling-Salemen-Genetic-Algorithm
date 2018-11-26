@@ -9,6 +9,7 @@ using namespace std;
 
 
 constexpr int SHUFFLES = 64;
+//Max longitude and latitude value;
 constexpr int MAP_BOUNDRY = 1000;
 //Asks user for number of cities in a tour
 //returns int representing size of tours
@@ -41,13 +42,13 @@ int random_int(const int & min, const int & max) {
     return uni(rng);
 }
 //Generates a new city
-//Returns a city
+//Returns a city object
 city create_cities(){
     city* new_city = new city(random_int(0, MAP_BOUNDRY), random_int(0, MAP_BOUNDRY));
     return *new_city;
 }
 //Generates a tour
-//Returns a tour
+//Returns a tour object
 tour create_tour(){
     vector<city> tour_list;
     for(int i = 0; i < CITIES_IN_TOUR; i++){
@@ -56,6 +57,8 @@ tour create_tour(){
     tour* new_tour = new tour(tour_list);
     return *new_tour;
 }
+//Generates a population
+//returns a population object
 population create_population(){
     vector<tour> population_list;
     tour new_tour = create_tour();
@@ -68,8 +71,9 @@ population create_population(){
 }
 
 int main() {
+    //Creating a population
     population temp_pop = create_population();
+    //Running genetic algorithm
     temp_pop.genetic_algorithm();
-
     return 0;
 }
