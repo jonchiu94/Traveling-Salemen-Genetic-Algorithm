@@ -124,10 +124,10 @@ void population::crossover() {
         temp_pop3->tour_evaluate();
         temp_pop4->tour_evaluate();
         temp_pop5->tour_evaluate();
-        for(int i = 0; i < NUMBER_OF_PARENTS; i++){
+        for(int j = 0; j < NUMBER_OF_PARENTS; j++){
 
             tour temp_tour = five_parent_cross(temp_pop->get_elite_tour(), temp_pop2->get_elite_tour(), temp_pop3->get_elite_tour(), temp_pop4->get_elite_tour(), temp_pop5->get_elite_tour());
-            population_list[i]=(temp_tour);
+            population_list[j]=(temp_tour);
         }
     }
 }
