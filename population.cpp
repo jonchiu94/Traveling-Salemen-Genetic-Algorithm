@@ -19,13 +19,18 @@ int population::random_int(const int & min, const int & max) {
     std::uniform_int_distribution<int> uni(min,max);
     return uni(rng);
 }
-
+//Seed for uniform double generation
 default_random_engine generator(time(nullptr));
+//Random double generator
+//Returns a random double
+//@param min is min_double for random number
+//@param max is max_double for random number
 double population::random_double(double min_double, double max_double) {
     uniform_real_distribution<double> distribution(min_double, max_double);
     double random_double = distribution(generator);
     return random_double;
 }
+//Finds the fittest tour and returns position
 int population::elite_tour() {
     double fitness = 0.0;
     int pos = 0;
@@ -38,9 +43,11 @@ int population::elite_tour() {
     }
     return pos;
 }
+//Returns the fittest tour
 tour population::get_elite_tour() {
     return population_list[elite_tour()];
 }
+//Moves elite tour to front of population
 void population::move_elite_tour() {
     int elite_pos = elite_tour();
     population_list.insert(population_list.begin(), population_list[elite_pos]);
