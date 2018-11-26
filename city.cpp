@@ -38,21 +38,31 @@ void swap(city& city1,city& city2){
 bool operator==(const city &A, const city &B){
     return((A.getId() == B.getId()) && (A.getX() == B.getX())&&(B.getY()== B.getY()));
 }
+//Overloaded != operator
+//@param A is city object to be compared
+//@param B is city object to be compared
 bool operator!=(const city &A, const city &B){
     return !operator==(A,B);
 }
+//Overloaded insertion operator
+//@param os is ostream object
+//@param A is city object
 ostream& operator<<(ostream& os, const city& A){
     os<< "ID: " << A.getId() << " X: " << A.getX() << " Y: "<< A.getY() << "\r\n";
     return os;
 }
+//Getter for X
+//returns x as int
 int city::getX() const {
     return x;
 }
-
+//Getter for y
+//returns y as int
 int city::getY() const {
     return y;
 }
-
+//Getter for id
+//return id as int
 int city::getId() const {
     return id;
 }
